@@ -7,6 +7,8 @@ import {
 import initialRecipes from "./initial-recipes.js";
 import { storageAvailable } from "./functions.js"
 import "./App.css";
+import { useSelector, useDispatch } from 'react-redux'
+import { reset, decrement, selectRecipe } from './features/current-recipe/currentRecipeSlice.js'
 
 // COMPONENTS
 
@@ -29,23 +31,25 @@ function App() {
   const [recipes, setRecipes] = useState(
     JSON.parse(localStorage.getItem("storedRecipes")),
   );
-  const [currentRecipe, setCurrentRecipe] = useState(0);
   const [formInput, setFormInput] = useState({
     name: "",
     ingredients: "",
     steps: "",
   });
   const [modalType, setModalType] = useState("");
+  const currentRecipe = useSelector((state) => state.currentRecipe.index);
+
+  const dispatch = useDispatch();
 
   const modalButton = useRef(null);
 
   function handleRecipeChange(event) {
-    setCurrentRecipe(event.target.value);
+    dispatch(selectRecipe(event.target.value));
   }
 
   function handleAddRecipe() {
     setRecipes([...recipes, formInput]);
-    setCurrentRecipe(recipes.length);
+    dispatch(selectRecipe(recipes.length));
   }
 
   function handleEditRecipe() {
@@ -60,9 +64,9 @@ function App() {
         return prev.toSpliced(currentRecipe, 1);
       });
       if (currentRecipe == 0) {
-        setCurrentRecipe(0);
+        dispatch(reset());
       } else {
-        setCurrentRecipe(currentRecipe - 1);
+        dispatch(decrement());
       }
     }
   }

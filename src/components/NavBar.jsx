@@ -1,12 +1,14 @@
 /* eslint-disable react/prop-types */
+import { useDispatch } from 'react-redux'
+import { setToAdd } from '../features/modal-type/modalTypeSlice.js'
 
 function NavBar({
   recipes,
   onRecipeChange,
   onModalClick,
-  setFormInput,
-  setModalType,
+  setFormInput
 }) {
+  const dispatch = useDispatch();
   return (
     <div className="navbar bg-lime-400 text-slate-800 dark:text-slate-800">
       <div className="navbar-start">
@@ -60,7 +62,7 @@ function NavBar({
         <button
           className="btn btn-ghost"
           onClick={() => {
-            setModalType("add");
+            dispatch(setToAdd());
             onModalClick();
             setFormInput({
               name: "",

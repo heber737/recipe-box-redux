@@ -36,7 +36,6 @@ function App() {
     ingredients: "",
     steps: "",
   });
-  const [modalType, setModalType] = useState("");
   const currentRecipe = useSelector((state) => state.currentRecipe.index);
 
   const dispatch = useDispatch();
@@ -87,7 +86,6 @@ function App() {
         formInput={formInput}
         onModalClick={handleModalClick}
         setFormInput={setFormInput}
-        setModalType={setModalType}
       />
       <RecipeDisplay
         recipes={recipes}
@@ -95,14 +93,12 @@ function App() {
         onModalClick={handleModalClick}
         onDeleteRecipe={handleDeleteRecipe}
         setFormInput={setFormInput}
-        setModalType={setModalType}
       />
       <RecipeModal
         onAddRecipe={handleAddRecipe}
         onEditRecipe={handleEditRecipe}
         formInput={formInput}
         setFormInput={setFormInput}
-        modalType={modalType}
         ref={modalButton}
       />
       <p className="pb-8 text-center font-bold">Created by Heber Villalobos</p>

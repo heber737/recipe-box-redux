@@ -1,10 +1,12 @@
 /* eslint-disable react/prop-types */
 import { useRef, forwardRef, useImperativeHandle } from "react";
+import { useSelector } from 'react-redux'
 
 const RecipeModal = forwardRef(function RecipeModal(
-  { modalType, onAddRecipe, onEditRecipe, formInput, setFormInput },
+  { onAddRecipe, onEditRecipe, formInput, setFormInput },
   ref,
 ) {
+  const modalType = useSelector((state) => state.modalType.value);
   const myModal1 = useRef(null);
   const buttonRef = useRef(null);
 

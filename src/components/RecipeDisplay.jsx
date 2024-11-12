@@ -1,14 +1,23 @@
 /* eslint-disable react/prop-types */
-import { formatRecipe } from "../functions.js";
+import { formatRecipe } from '../functions.js'
+import { useDispatch } from 'react-redux'
+import { setToEdit } from '../features/modal-type/modalTypeSlice.js'
+
+function getAuth() {
+  const response = confirm(
+    "Are you sure you want to delete this recipe definitely?",
+  );
+  return response;
+}
 
 function RecipeDisplay({
   recipes,
   currentRecipe,
   onModalClick,
   onDeleteRecipe,
-  setFormInput,
-  setModalType,
+  setFormInput
 }) {
+  const dispatch = useDispatch();
   if (recipes.length > 0) {
     return (
       <div className="bg-inherti mx-auto mt-6 min-h-full max-w-3xl items-start px-6 pb-6 sm:px-8 md:pt-6 lg:bg-amber-100">
@@ -42,7 +51,7 @@ function RecipeDisplay({
             id="edit-btn"
             className="btn basis-16 bg-lime-400 dark:border-none"
             onClick={() => {
-              setModalType("edit");
+              dispatch(setToEdit());
               onModalClick();
               setFormInput({
                 name: recipes[currentRecipe]["name"],
@@ -65,12 +74,6 @@ function RecipeDisplay({
             id="delete-button"
             className="btn basis-16 bg-red-400 dark:border-none"
             onClick={() => {
-              function getAuth() {
-                const response = confirm(
-                  "Are you sure you want to delete this recipe definitely?",
-                );
-                return response;
-              }
               onDeleteRecipe(getAuth());
             }}
           >

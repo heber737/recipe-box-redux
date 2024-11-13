@@ -31,19 +31,15 @@ function App() {
   const [recipes, setRecipes] = useState(
     JSON.parse(localStorage.getItem("storedRecipes")),
   );
-  const [formInput, setFormInput] = useState({
-    name: "",
-    ingredients: "",
-    steps: "",
-  });
+  const formInput = useSelector((state) => state.formInput);
   const currentRecipe = useSelector((state) => state.currentRecipe.index);
 
   const dispatch = useDispatch();
 
   const modalButton = useRef(null);
 
-  function handleRecipeChange(event) {
-    dispatch(selectRecipe(event.target.value));
+  function handleRecipeChange(index) {
+    dispatch(selectRecipe(index));
   }
 
   function handleAddRecipe() {
@@ -83,22 +79,16 @@ function App() {
       <NavBar
         recipes={recipes}
         onRecipeChange={handleRecipeChange}
-        formInput={formInput}
         onModalClick={handleModalClick}
-        setFormInput={setFormInput}
       />
       <RecipeDisplay
         recipes={recipes}
-        currentRecipe={currentRecipe}
         onModalClick={handleModalClick}
         onDeleteRecipe={handleDeleteRecipe}
-        setFormInput={setFormInput}
       />
       <RecipeModal
         onAddRecipe={handleAddRecipe}
         onEditRecipe={handleEditRecipe}
-        formInput={formInput}
-        setFormInput={setFormInput}
         ref={modalButton}
       />
       <p className="pb-8 text-center font-bold">Created by Heber Villalobos</p>

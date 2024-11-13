@@ -1,12 +1,12 @@
 /* eslint-disable react/prop-types */
 import { useDispatch } from 'react-redux'
 import { setToAdd } from '../features/modal-type/modalTypeSlice.js'
+import { inputReset } from '../features/form-input/formInputSlice.js'
 
 function NavBar({
   recipes,
   onRecipeChange,
-  onModalClick,
-  setFormInput
+  onModalClick
 }) {
   const dispatch = useDispatch();
   return (
@@ -39,8 +39,8 @@ function NavBar({
                   <li key={i}>
                     <button
                       value={i}
-                      onClick={(e) => {
-                        onRecipeChange(e);
+                      onClick={() => {
+                        onRecipeChange(i);
                       }}
                       className="btn btn-sm btn-ghost truncate"
                     >
@@ -64,11 +64,7 @@ function NavBar({
           onClick={() => {
             dispatch(setToAdd());
             onModalClick();
-            setFormInput({
-              name: "",
-              ingredients: "",
-              steps: "",
-            });
+            dispatch(inputReset())
           }}
         >
           <svg

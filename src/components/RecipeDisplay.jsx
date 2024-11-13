@@ -1,23 +1,19 @@
 /* eslint-disable react/prop-types */
-import { formatRecipe } from '../functions.js'
-import { useDispatch } from 'react-redux'
-import { setToEdit } from '../features/modal-type/modalTypeSlice.js'
+import { formatRecipe } from "../functions.js";
+import { useSelector, useDispatch } from "react-redux";
+import { setToEdit } from "../features/modal-type/modalTypeSlice.js";
+import { updateAll } from "../features/form-input/formInputSlice.js";
 
 function getAuth() {
   const response = confirm(
-    "Are you sure you want to delete this recipe definitely?",
+    "Are you sure you want to delete this recipe definitely?"
   );
   return response;
 }
 
-function RecipeDisplay({
-  recipes,
-  currentRecipe,
-  onModalClick,
-  onDeleteRecipe,
-  setFormInput
-}) {
+function RecipeDisplay({ recipes, onModalClick, onDeleteRecipe }) {
   const dispatch = useDispatch();
+  const currentRecipe = useSelector((state) => state.currentRecipe.index);
   if (recipes.length > 0) {
     return (
       <div className="bg-inherti mx-auto mt-6 min-h-full max-w-3xl items-start px-6 pb-6 sm:px-8 md:pt-6 lg:bg-amber-100">
@@ -33,7 +29,7 @@ function RecipeDisplay({
                   {ingredient}
                 </li>
               );
-            },
+            }
           )}
         </ul>
         <h2 className="pb-4 text-2xl font-bold">Steps</h2>
@@ -53,11 +49,13 @@ function RecipeDisplay({
             onClick={() => {
               dispatch(setToEdit());
               onModalClick();
-              setFormInput({
-                name: recipes[currentRecipe]["name"],
-                ingredients: recipes[currentRecipe]["ingredients"],
-                steps: recipes[currentRecipe]["steps"],
-              });
+              dispatch(
+                updateAll({
+                  name: recipes[currentRecipe]["name"],
+                  ingredients: recipes[currentRecipe]["ingredients"],
+                  steps: recipes[currentRecipe]["steps"],
+                })
+              );
             }}
           >
             <svg

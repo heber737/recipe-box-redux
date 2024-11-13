@@ -1,12 +1,15 @@
 /* eslint-disable react/prop-types */
 import { useRef, forwardRef, useImperativeHandle } from "react";
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
+import { updateName, updateIngredients, updateSteps } from '../features/form-input/formInputSlice';
 
 const RecipeModal = forwardRef(function RecipeModal(
-  { onAddRecipe, onEditRecipe, formInput, setFormInput },
+  { onAddRecipe, onEditRecipe },
   ref,
 ) {
+  const dispatch = useDispatch();
   const modalType = useSelector((state) => state.modalType.value);
+  const formInput = useSelector((state) => state.formInput);
   const myModal1 = useRef(null);
   const buttonRef = useRef(null);
 
@@ -51,12 +54,8 @@ Add the eggs, one by one, and mix for 3 minutes. *`;
               maxLength="20"
               value={formInput.name}
               onChange={(e) => {
-                setFormInput({
-                  name: e.target.value,
-                  ingredients: formInput.ingredients,
-                  steps: formInput.steps,
-                });
-              }}
+                dispatch(updateName(e.target.value))
+                  }}
               placeholder="Recipe Name"
               autoFocus="autofocus"
             ></textarea>
@@ -69,12 +68,8 @@ Add the eggs, one by one, and mix for 3 minutes. *`;
               rows="3"
               value={formInput.ingredients}
               onChange={(e) => {
-                setFormInput({
-                  name: formInput.name,
-                  ingredients: e.target.value,
-                  steps: formInput.steps,
-                });
-              }}
+                dispatch(updateIngredients(e.target.value))
+                  }}
               placeholder={ingredientPlaceholder}
             ></textarea>
             <label htmlFor="steps">
@@ -86,12 +81,8 @@ Add the eggs, one by one, and mix for 3 minutes. *`;
               rows="5"
               value={formInput.steps}
               onChange={(e) => {
-                setFormInput({
-                  name: formInput.name,
-                  ingredients: formInput.ingredients,
-                  steps: e.target.value,
-                });
-              }}
+                dispatch(updateSteps(e.target.value))
+                  }}
               placeholder={stepsPlaceholder}
             ></textarea>
             <div className="mt-7 flex h-fit w-full flex-none justify-end gap-3">

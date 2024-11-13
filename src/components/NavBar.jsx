@@ -1,13 +1,13 @@
 /* eslint-disable react/prop-types */
-import { useDispatch } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import { setToAdd } from '../features/modal-type/modalTypeSlice.js'
 import { inputReset } from '../features/form-input/formInputSlice.js'
 
 function NavBar({
-  recipes,
   onRecipeChange,
   onModalClick
 }) {
+  const recipes = useSelector((state) => state.recipes.recipes);
   const dispatch = useDispatch();
   return (
     <div className="navbar bg-lime-400 text-slate-800 dark:text-slate-800">

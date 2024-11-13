@@ -23,3 +23,10 @@ export function formatRecipe(string) {
   });
   return arrayFromString.filter((item) => item !== "");
 }
+
+export function getAuth() {
+  const response = confirm(
+    "Are you sure you want to delete this recipe definitely?"
+  );
+  return response;
+}

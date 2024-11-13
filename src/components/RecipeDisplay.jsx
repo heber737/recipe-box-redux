@@ -1,19 +1,15 @@
 /* eslint-disable react/prop-types */
-import { formatRecipe } from "../functions.js";
+import { formatRecipe, getAuth } from "../functions.js";
 import { useSelector, useDispatch } from "react-redux";
 import { setToEdit } from "../features/modal-type/modalTypeSlice.js";
 import { updateAll } from "../features/form-input/formInputSlice.js";
 
-function getAuth() {
-  const response = confirm(
-    "Are you sure you want to delete this recipe definitely?"
-  );
-  return response;
-}
-
-function RecipeDisplay({ recipes, onModalClick, onDeleteRecipe }) {
-  const dispatch = useDispatch();
+function RecipeDisplay({ onModalClick, onDeleteRecipe }) {
+  const recipes = useSelector((state) => state.recipes.recipes);
   const currentRecipe = useSelector((state) => state.currentRecipe.index);
+
+  const dispatch = useDispatch();
+
   if (recipes.length > 0) {
     return (
       <div className="bg-inherti mx-auto mt-6 min-h-full max-w-3xl items-start px-6 pb-6 sm:px-8 md:pt-6 lg:bg-amber-100">

@@ -1,14 +1,12 @@
 import {
-  useState,
   useEffect,
   useRef
 } from "react";
 
-import initialRecipes from "./initial-recipes.js";
-import { storageAvailable } from "./functions.js"
 import "./App.css";
 import { useSelector, useDispatch } from 'react-redux'
 import { reset, decrement, selectRecipe } from './features/current-recipe/currentRecipeSlice.js'
+import { addRecipe, editRecipe, deleteRecipe } from './features/recipes/recipesSlice.js'
 
 // COMPONENTS
 
@@ -16,48 +14,37 @@ import NavBar from "./components/NavBar.jsx";
 import RecipeDisplay from "./components/RecipeDisplay.jsx";
 import RecipeModal from "./components/RecipeModal.jsx";
 
-// LOCAL STORAGE AVAILABILITY TEST
-
-if (
-  storageAvailable("localStorage") &&
-  !localStorage.getItem("storedRecipes")
-) {
-  localStorage.setItem("storedRecipes", JSON.stringify(initialRecipes));
-}
-
 // APP
 
 function App() {
-  const [recipes, setRecipes] = useState(
-    JSON.parse(localStorage.getItem("storedRecipes")),
-  );
+
+  const recipes = useSelector((state) => state.recipes.recipes);
   const formInput = useSelector((state) => state.formInput);
   const currentRecipe = useSelector((state) => state.currentRecipe.index);
 
-  const dispatch = useDispatch();
-
   const modalButton = useRef(null);
+
+  const dispatch = useDispatch();
 
   function handleRecipeChange(index) {
     dispatch(selectRecipe(index));
   }
 
   function handleAddRecipe() {
-    setRecipes([...recipes, formInput]);
+    dispatch(addRecipe(formInput));
     dispatch(selectRecipe(recipes.length));
   }
 
   function handleEditRecipe() {
-    setRecipes((prev) => {
-      return prev.toSpliced(currentRecipe, 1, formInput);
-    });
+    dispatch(editRecipe({
+      currentRecipe,
+      formInput
+    }))
   }
 
   function handleDeleteRecipe(allow) {
     if (allow) {
-      setRecipes((prev) => {
-        return prev.toSpliced(currentRecipe, 1);
-      });
+      dispatch(deleteRecipe(currentRecipe));
       if (currentRecipe == 0) {
         dispatch(reset());
       } else {
@@ -77,12 +64,10 @@ function App() {
   return (
     <div className="min-h-screen w-full bg-amber-50 dark:text-slate-800">
       <NavBar
-        recipes={recipes}
         onRecipeChange={handleRecipeChange}
         onModalClick={handleModalClick}
       />
       <RecipeDisplay
-        recipes={recipes}
         onModalClick={handleModalClick}
         onDeleteRecipe={handleDeleteRecipe}
       />

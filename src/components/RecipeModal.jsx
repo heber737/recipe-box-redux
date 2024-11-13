@@ -7,11 +7,12 @@ const RecipeModal = forwardRef(function RecipeModal(
   { onAddRecipe, onEditRecipe },
   ref,
 ) {
-  const dispatch = useDispatch();
   const modalType = useSelector((state) => state.modalType.value);
   const formInput = useSelector((state) => state.formInput);
   const myModal1 = useRef(null);
   const buttonRef = useRef(null);
+
+  const dispatch = useDispatch();
 
   const ingredientPlaceholder = `Separate each ingredient with a "*"
               

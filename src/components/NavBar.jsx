@@ -1,12 +1,10 @@
 /* eslint-disable react/prop-types */
-import { useSelector, useDispatch } from 'react-redux'
-import { setToAdd } from '../features/modal-type/modalTypeSlice.js'
-import { inputReset } from '../features/form-input/formInputSlice.js'
+import { useSelector, useDispatch } from "react-redux";
+import { selectRecipe } from "../features/current-recipe/currentRecipeSlice.js";
+import { setToAdd } from "../features/modal-type/modalTypeSlice.js";
+import { inputReset } from "../features/form-input/formInputSlice.js";
 
-function NavBar({
-  onRecipeChange,
-  onModalClick
-}) {
+function NavBar({ onModalClick }) {
   const recipes = useSelector((state) => state.recipes.recipes);
   const dispatch = useDispatch();
   return (
@@ -40,7 +38,7 @@ function NavBar({
                     <button
                       value={i}
                       onClick={() => {
-                        onRecipeChange(i);
+                        dispatch(selectRecipe(i));
                       }}
                       className="btn btn-sm btn-ghost truncate"
                     >
@@ -64,7 +62,7 @@ function NavBar({
           onClick={() => {
             dispatch(setToAdd());
             onModalClick();
-            dispatch(inputReset())
+            dispatch(inputReset());
           }}
         >
           <svg

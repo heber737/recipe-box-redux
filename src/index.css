@@ -4,8 +4,6 @@
 
 @layer utilities {
   .stable-gutter {
-
-      scrollbar-gutter: stable;
-
+    scrollbar-gutter: stable;
   }
 }

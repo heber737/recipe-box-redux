@@ -1,10 +1,15 @@
 /* eslint-disable react/prop-types */
 import { formatRecipe, getAuth } from "../functions.js";
 import { useSelector, useDispatch } from "react-redux";
+import {
+  reset,
+  decrement,
+} from "../features/current-recipe/currentRecipeSlice.js";
+import { deleteRecipe } from "../features/recipes/recipesSlice.js";
 import { setToEdit } from "../features/modal-type/modalTypeSlice.js";
 import { updateAll } from "../features/form-input/formInputSlice.js";
 
-function RecipeDisplay({ onModalClick, onDeleteRecipe }) {
+function RecipeDisplay({ onModalClick }) {
   const recipes = useSelector((state) => state.recipes.recipes);
   const currentRecipe = useSelector((state) => state.currentRecipe.index);
 
@@ -68,7 +73,15 @@ function RecipeDisplay({ onModalClick, onDeleteRecipe }) {
             id="delete-button"
             className="btn basis-16 bg-red-400 dark:border-none"
             onClick={() => {
-              onDeleteRecipe(getAuth());
+              const allow = getAuth();
+              if (allow) {
+                dispatch(deleteRecipe(currentRecipe));
+                if (currentRecipe == 0) {
+                  dispatch(reset());
+                } else {
+                  dispatch(decrement());
+                }
+              }
             }}
           >
             <svg

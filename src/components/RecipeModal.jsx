@@ -1,12 +1,18 @@
 /* eslint-disable react/prop-types */
 import { useRef, forwardRef, useImperativeHandle } from "react";
-import { useSelector, useDispatch } from 'react-redux'
-import { updateName, updateIngredients, updateSteps } from '../features/form-input/formInputSlice';
+import { useSelector, useDispatch } from "react-redux";
+import {
+  updateName,
+  updateIngredients,
+  updateSteps,
+} from "../features/form-input/formInputSlice";
+import { selectRecipe } from "../features/current-recipe/currentRecipeSlice.js";
+import { addRecipe, editRecipe } from "../features/recipes/recipesSlice.js";
 
-const RecipeModal = forwardRef(function RecipeModal(
-  { onAddRecipe, onEditRecipe },
-  ref,
-) {
+// eslint-disable-next-line no-empty-pattern
+const RecipeModal = forwardRef(function RecipeModal({}, ref) {
+  const recipes = useSelector((state) => state.recipes.recipes);
+  const currentRecipe = useSelector((state) => state.currentRecipe.index);
   const modalType = useSelector((state) => state.modalType.value);
   const formInput = useSelector((state) => state.formInput);
   const myModal1 = useRef(null);
@@ -55,8 +61,8 @@ Add the eggs, one by one, and mix for 3 minutes. *`;
               maxLength="20"
               value={formInput.name}
               onChange={(e) => {
-                dispatch(updateName(e.target.value))
-                  }}
+                dispatch(updateName(e.target.value));
+              }}
               placeholder="Recipe Name"
               autoFocus="autofocus"
             ></textarea>
@@ -69,8 +75,8 @@ Add the eggs, one by one, and mix for 3 minutes. *`;
               rows="3"
               value={formInput.ingredients}
               onChange={(e) => {
-                dispatch(updateIngredients(e.target.value))
-                  }}
+                dispatch(updateIngredients(e.target.value));
+              }}
               placeholder={ingredientPlaceholder}
             ></textarea>
             <label htmlFor="steps">
@@ -82,15 +88,16 @@ Add the eggs, one by one, and mix for 3 minutes. *`;
               rows="5"
               value={formInput.steps}
               onChange={(e) => {
-                dispatch(updateSteps(e.target.value))
-                  }}
+                dispatch(updateSteps(e.target.value));
+              }}
               placeholder={stepsPlaceholder}
             ></textarea>
             <div className="mt-7 flex h-fit w-full flex-none justify-end gap-3">
               {modalType === "add" ? (
                 <button
                   onClick={() => {
-                    onAddRecipe();
+                    dispatch(addRecipe(formInput));
+                    dispatch(selectRecipe(recipes.length));
                     myModal1.current.close();
                   }}
                   className="btn bg-lime-400 dark:border-none dark:text-slate-800"
@@ -100,7 +107,12 @@ Add the eggs, one by one, and mix for 3 minutes. *`;
               ) : (
                 <button
                   onClick={() => {
-                    onEditRecipe();
+                    dispatch(
+                      editRecipe({
+                        currentRecipe,
+                        formInput,
+                      })
+                    );
                     myModal1.current.close();
                   }}
                   className="btn bg-lime-400 dark:border-none dark:text-slate-800"

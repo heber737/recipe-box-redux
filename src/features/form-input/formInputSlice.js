@@ -16,10 +16,10 @@ export const formInputSlice = createSlice({
       state.steps = "";
     },
     updateAll: (state, action) => {
-        state.name = action.payload.name;
-        state.ingredients = action.payload.ingredients;
-        state.steps = action.payload.steps;
-      },
+      state.name = action.payload.name;
+      state.ingredients = action.payload.ingredients;
+      state.steps = action.payload.steps;
+    },
     updateName: (state, action) => {
       state.name = action.payload;
     },
@@ -32,7 +32,12 @@ export const formInputSlice = createSlice({
   },
 });
 
-export const { inputReset, updateAll, updateName, updateIngredients, updateSteps } =
-  formInputSlice.actions;
+export const {
+  inputReset,
+  updateAll,
+  updateName,
+  updateIngredients,
+  updateSteps,
+} = formInputSlice.actions;
 
 export default formInputSlice.reducer;

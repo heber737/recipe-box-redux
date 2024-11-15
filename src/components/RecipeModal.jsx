@@ -1,5 +1,4 @@
-/* eslint-disable react/prop-types */
-import { useRef, forwardRef, useImperativeHandle } from "react";
+import { useRef, forwardRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import {
   updateName,
@@ -9,14 +8,13 @@ import {
 import { selectRecipe } from "../features/current-recipe/currentRecipeSlice.js";
 import { addRecipe, editRecipe } from "../features/recipes/recipesSlice.js";
 
-// eslint-disable-next-line no-empty-pattern
-const RecipeModal = forwardRef(function RecipeModal({}, ref) {
+const RecipeModal = forwardRef(function RecipeModal(props, ref) {
   const recipes = useSelector((state) => state.recipes.recipes);
   const currentRecipe = useSelector((state) => state.currentRecipe.index);
   const modalType = useSelector((state) => state.modalType.value);
   const formInput = useSelector((state) => state.formInput);
-  const myModal1 = useRef(null);
-  const buttonRef = useRef(null);
+
+  const myModal = useRef(null);
 
   const dispatch = useDispatch();
 
@@ -30,22 +28,14 @@ In a big glass bowl, mix the dry ingedients. *
 Add in the milk slowly while stirring the mix. *
 Add the eggs, one by one, and mix for 3 minutes. *`;
 
-  useImperativeHandle(ref, () => {
-    return {
-      click() {
-        buttonRef.current.click();
-      },
-    };
-  }, [buttonRef]);
-
   return (
     <>
       <button
-        ref={buttonRef}
+        ref={ref}
         className="invisible"
-        onClick={() => myModal1.current.showModal()}
+        onClick={() => myModal.current.showModal()}
       ></button>
-      <dialog ref={myModal1} id="my_modal_1" className="modal">
+      <dialog ref={myModal} id="my_modal_1" className="modal">
         <div className="modal-box min-w-[300px] max-w-md bg-amber-50 text-center text-sm">
           <div>
             <h3 className="text-lg font-bold">
@@ -98,7 +88,7 @@ Add the eggs, one by one, and mix for 3 minutes. *`;
                   onClick={() => {
                     dispatch(addRecipe(formInput));
                     dispatch(selectRecipe(recipes.length));
-                    myModal1.current.close();
+                    myModal.current.close();
                   }}
                   className="btn bg-lime-400 dark:border-none dark:text-slate-800"
                 >
@@ -113,7 +103,7 @@ Add the eggs, one by one, and mix for 3 minutes. *`;
                         formInput,
                       })
                     );
-                    myModal1.current.close();
+                    myModal.current.close();
                   }}
                   className="btn bg-lime-400 dark:border-none dark:text-slate-800"
                 >
@@ -122,7 +112,7 @@ Add the eggs, one by one, and mix for 3 minutes. *`;
               )}
               <button
                 onClick={() => {
-                  myModal1.current.close();
+                  myModal.current.close();
                 }}
                 className="btn bg-red-400 dark:border-none dark:text-slate-800"
               >

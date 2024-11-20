@@ -7,6 +7,17 @@ import { inputReset } from "../features/form-input/formInputSlice.js";
 function NavBar({ onModalClick }) {
   const recipes = useSelector((state) => state.recipes.recipes);
   const dispatch = useDispatch();
+
+  const handleSelectRecipe = (index) => {
+    dispatch(selectRecipe(index));
+  };
+
+  const handlePlusButtonClick = () => {
+    dispatch(setToAdd());
+    dispatch(inputReset());
+    onModalClick();
+  };
+
   return (
     <div className="navbar bg-lime-400 text-slate-800 dark:text-slate-800">
       <div className="navbar-start">
@@ -37,9 +48,7 @@ function NavBar({ onModalClick }) {
                   <li key={i}>
                     <button
                       value={i}
-                      onClick={() => {
-                        dispatch(selectRecipe(i));
-                      }}
+                      onClick={() => handleSelectRecipe(i)}
                       className="btn btn-sm btn-ghost truncate"
                     >
                       {recipe.name}
@@ -57,14 +66,7 @@ function NavBar({ onModalClick }) {
         <a className="text-2xl font-black">RecipeBox</a>
       </div>
       <div className="navbar-end">
-        <button
-          className="btn btn-ghost"
-          onClick={() => {
-            dispatch(setToAdd());
-            onModalClick();
-            dispatch(inputReset());
-          }}
-        >
+        <button className="btn btn-ghost" onClick={handlePlusButtonClick}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             height="24px"

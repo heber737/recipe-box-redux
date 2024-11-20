@@ -15,6 +15,30 @@ function RecipeDisplay({ onModalClick }) {
 
   const dispatch = useDispatch();
 
+  const handleEditButtonClick = () => {
+    dispatch(setToEdit());
+    dispatch(
+      updateAll({
+        name: recipes[currentRecipe]["name"],
+        ingredients: recipes[currentRecipe]["ingredients"],
+        steps: recipes[currentRecipe]["steps"],
+      })
+    );
+    onModalClick();
+  };
+
+  const handleDeleteButtonClick = () => {
+    const allow = getAuth();
+    if (allow) {
+      dispatch(deleteRecipe(currentRecipe));
+      if (currentRecipe == 0) {
+        dispatch(reset());
+      } else {
+        dispatch(decrement());
+      }
+    }
+  };
+
   if (recipes.length > 0) {
     return (
       <div className="bg-inherti mx-auto mt-6 min-h-full max-w-3xl items-start px-6 pb-6 sm:px-8 md:pt-6 lg:bg-amber-100">
@@ -47,17 +71,7 @@ function RecipeDisplay({ onModalClick }) {
           <button
             id="edit-btn"
             className="btn basis-16 bg-lime-400 dark:border-none"
-            onClick={() => {
-              dispatch(setToEdit());
-              onModalClick();
-              dispatch(
-                updateAll({
-                  name: recipes[currentRecipe]["name"],
-                  ingredients: recipes[currentRecipe]["ingredients"],
-                  steps: recipes[currentRecipe]["steps"],
-                })
-              );
-            }}
+            onClick={handleEditButtonClick}
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -72,17 +86,7 @@ function RecipeDisplay({ onModalClick }) {
           <button
             id="delete-button"
             className="btn basis-16 bg-red-400 dark:border-none"
-            onClick={() => {
-              const allow = getAuth();
-              if (allow) {
-                dispatch(deleteRecipe(currentRecipe));
-                if (currentRecipe == 0) {
-                  dispatch(reset());
-                } else {
-                  dispatch(decrement());
-                }
-              }
-            }}
+            onClick={handleDeleteButtonClick}
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"

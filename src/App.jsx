@@ -14,7 +14,7 @@ function App() {
   const recipes = useSelector((state) => state.recipes.recipes);
   const modalButton = useRef(null);
 
-  function handleModalClick() {
+  const handleModalClick = () => {
     modalButton.current.click();
   }
 

@@ -28,6 +28,39 @@ In a big glass bowl, mix the dry ingedients. *
 Add in the milk slowly while stirring the mix. *
 Add the eggs, one by one, and mix for 3 minutes. *`;
 
+  const handleRecipeNameChange = (event) => {
+    dispatch(updateName(event.target.value));
+  };
+
+  const handleIngredientsChange = (event) => {
+    dispatch(updateIngredients(event.target.value));
+  };
+
+  const handleStepsChange = (event) => {
+    dispatch(updateSteps(event.target.value));
+  };
+
+  const handleAddRecipe = () => {
+    dispatch(addRecipe(formInput));
+    dispatch(selectRecipe(recipes.length));
+    myModal.current.close();
+  };
+
+  const handleEditRecipe = () => {
+    dispatch(
+      editRecipe({
+        currentRecipe,
+        formInput,
+      })
+    );
+    myModal.current.close();
+  };
+
+  const handleDiscardChanges  = () => {
+    myModal.current.close();
+  };
+
+
   return (
     <>
       <button
@@ -50,9 +83,7 @@ Add the eggs, one by one, and mix for 3 minutes. *`;
               rows="1"
               maxLength="20"
               value={formInput.name}
-              onChange={(e) => {
-                dispatch(updateName(e.target.value));
-              }}
+              onChange={(e) => handleRecipeNameChange(e)}
               placeholder="Recipe Name"
               autoFocus="autofocus"
             ></textarea>
@@ -64,9 +95,7 @@ Add the eggs, one by one, and mix for 3 minutes. *`;
               className="textarea textarea-bordered w-full leading-tight dark:bg-white"
               rows="3"
               value={formInput.ingredients}
-              onChange={(e) => {
-                dispatch(updateIngredients(e.target.value));
-              }}
+              onChange={(e) => handleIngredientsChange(e)}
               placeholder={ingredientPlaceholder}
             ></textarea>
             <label htmlFor="steps">
@@ -77,43 +106,27 @@ Add the eggs, one by one, and mix for 3 minutes. *`;
               className="textarea textarea-bordered w-full leading-tight dark:bg-white"
               rows="5"
               value={formInput.steps}
-              onChange={(e) => {
-                dispatch(updateSteps(e.target.value));
-              }}
+              onChange={(e) => handleStepsChange(e)}
               placeholder={stepsPlaceholder}
             ></textarea>
             <div className="mt-7 flex h-fit w-full flex-none justify-end gap-3">
               {modalType === "add" ? (
                 <button
-                  onClick={() => {
-                    dispatch(addRecipe(formInput));
-                    dispatch(selectRecipe(recipes.length));
-                    myModal.current.close();
-                  }}
+                  onClick={handleAddRecipe}
                   className="btn bg-lime-400 dark:border-none dark:text-slate-800"
                 >
                   Add Recipe
                 </button>
               ) : (
                 <button
-                  onClick={() => {
-                    dispatch(
-                      editRecipe({
-                        currentRecipe,
-                        formInput,
-                      })
-                    );
-                    myModal.current.close();
-                  }}
+                  onClick={handleEditRecipe}
                   className="btn bg-lime-400 dark:border-none dark:text-slate-800"
                 >
                   Edit Recipe
                 </button>
               )}
               <button
-                onClick={() => {
-                  myModal.current.close();
-                }}
+                onClick={handleDiscardChanges}
                 className="btn bg-red-400 dark:border-none dark:text-slate-800"
               >
                 Discard
